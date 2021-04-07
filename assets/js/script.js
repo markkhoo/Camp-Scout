@@ -8,6 +8,43 @@ var searchLon = 0;
 var currentPageNum = 0;
 var maximumPageNum = 0;
 
+// Display Cards
+var searchResults = document.getElementById("searchResults");
+
+function displayResults(data_object) {
+
+    // Clear Previous Results if any
+    searchResults.innerHTML = "";
+
+    // Check for non-zero results
+    if (data_object.data != null) {
+
+        for (var i = 0; i < data_object.data.length; i++) {
+            var cardResult = document.createElement("div");
+
+            var resultName = document.createElement("h4");
+            resultName.innerHTML = data_object.data[i].name;
+
+            var resultDiff = document.createElement("p");
+            resultDiff.innerHTML = "Trail Difficulty: " + data_object.data[i].difficulty;
+
+            var resultRate = document.createElement("p");
+            resultRate.innerHTML = "Trail Rating: " + data_object.data[i].rating + "/5";
+
+            cardResult.appendChild(resultName);
+            cardResult.appendChild(resultDiff);
+            cardResult.appendChild(resultRate);
+            searchResults.appendChild(cardResult);
+        };
+        
+    } else {
+        var noResults = document.createElement("p");
+        noResults.innerHTML = "no results";
+        searchResults.appendChild(noResults);
+        // No search results... Display "No trails nearby"
+    }
+};
+
 // Trail Search Function
 function trailSearch(pageNum, lat, lon) {
     var results_Number = 12;
@@ -24,6 +61,8 @@ function trailSearch(pageNum, lat, lon) {
     .then(function (data){
         maximumPageNum = Math.ceil(data.results / results_Number);
         console.log(data);
+
+        displayResults(data);
     });
 };
 
@@ -45,6 +84,7 @@ searchForm.addEventListener('submit', function(event) {
 
     fetch(weatherURL)
     .then(function(response) {
+
         // Checks for valid City
         if (response.status == 200) {
             return response.json();
@@ -89,6 +129,11 @@ document.getElementById('prevBtn').addEventListener('click', function(){
         console.log('prev');
     };  
 });
+
+
+
+
+
 
 
 
