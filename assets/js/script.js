@@ -5,6 +5,7 @@
 // Global Variables
 var searchLat = 0;
 var searchLon = 0;
+var currentCity = "";
 var currentPageNum = 0;
 var maximumPageNum = 0;
 
@@ -16,10 +17,16 @@ function displayResults(data_object) {
     // Clear Previous Results if any
     searchResults.innerHTML = "";
 
+    // Update Current City in search results
+    document.getElementById("currentCity").innerHTML = currentCity;
+
     // Check for non-zero results
     if (data_object.data != null) {
 
+        // Display Main Work
         for (var i = 0; i < data_object.data.length; i++) {
+
+            // Append Individual Card Results
             var cardResult = document.createElement("div");
 
             var resultName = document.createElement("h4");
@@ -35,14 +42,15 @@ function displayResults(data_object) {
             cardResult.appendChild(resultDiff);
             cardResult.appendChild(resultRate);
             searchResults.appendChild(cardResult);
-        };
+        };  
         
     } else {
         var noResults = document.createElement("p");
+
+        // No search results... Display "No trails nearby"
         noResults.innerHTML = "no results";
         searchResults.appendChild(noResults);
-        // No search results... Display "No trails nearby"
-    }
+    };
 };
 
 // Trail Search Function
@@ -95,6 +103,7 @@ searchForm.addEventListener('submit', function(event) {
     .then(function(data) {
         console.log(data);
 
+        currentCity = cityName.toUpperCase();
         searchLat = data.coord.lat;
         searchLon = data.coord.lon;
         currentPageNum = 1;
