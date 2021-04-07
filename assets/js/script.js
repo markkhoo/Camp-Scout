@@ -28,15 +28,28 @@ function displayResults(data_object) {
 
             // Append Individual Card Results
             var cardResult = document.createElement("div");
+            cardResult.setAttribute("data-lat", data_object.data[i].lat);
+            cardResult.setAttribute("data-lon", data_object.data[i].lon);
+            cardResult.setAttribute("data-id",data_object.data[i].id.toString());
 
             var resultName = document.createElement("h4");
             resultName.innerHTML = data_object.data[i].name;
 
             var resultDiff = document.createElement("p");
-            resultDiff.innerHTML = "Trail Difficulty: " + data_object.data[i].difficulty;
-
+            // Checks if trail has a difficulty
+            if (data_object.data[i].difficulty != "") {
+                resultDiff.innerHTML = "Trail Difficulty: " + data_object.data[i].difficulty;
+            } else {
+                resultDiff.innerHTML = "Trail Difficulty: n/a";
+            };
+            
             var resultRate = document.createElement("p");
-            resultRate.innerHTML = "Trail Rating: " + data_object.data[i].rating + "/5";
+            // Checks if trail has a rating
+            if (data_object.data[i].rating != "") {
+                resultRate.innerHTML = "Trail Rating: " + data_object.data[i].rating + "/5";
+            } else {
+                resultRate.innerHTML = "Trail Rating: n/a ";
+            };
 
             cardResult.appendChild(resultName);
             cardResult.appendChild(resultDiff);
