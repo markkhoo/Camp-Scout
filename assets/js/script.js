@@ -27,18 +27,25 @@ function trailSearch(pageNum, lat, lon) {
     });
 };
 
+// Update Page Number
+function updatePageNum() {
+    document.getElementById("pageNum").innerHTML = currentPageNum;
+};
+
 // Form Submission
 var searchForm = document.getElementById("location");
 
 searchForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
+    // Construct URL to be fetched
     var cityName = searchForm.firstElementChild.value.toLowerCase();
     var keyWeather = "22bb6e2db366aab8539ac22df7b32d3a"
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + keyWeather;
 
     fetch(weatherURL)
     .then(function(response) {
+        // Checks for valid City
         if (response.status == 200) {
             return response.json();
         } else {
@@ -47,15 +54,13 @@ searchForm.addEventListener('submit', function(event) {
     })
     .then(function(data) {
         console.log(data);
-        console.log(data.coord.lat);
-        console.log(data.coord.lon);
 
         searchLat = data.coord.lat;
         searchLon = data.coord.lon;
         currentPageNum = 1;
 
         trailSearch(currentPageNum,searchLat,searchLon);
-
+        updatePageNum();
     })
     .catch(err => {
         console.log(err);
@@ -68,9 +73,10 @@ document.getElementById('nextBtn').addEventListener('click', function(){
     if (currentPageNum < maximumPageNum) {
         currentPageNum++;
         trailSearch(currentPageNum,searchLat,searchLon);
-    };
+        updatePageNum();
 
-    console.log('next');
+        console.log('next');
+    };
 });
 
 // Previous Button
@@ -78,9 +84,10 @@ document.getElementById('prevBtn').addEventListener('click', function(){
     if (currentPageNum > 1) {
         currentPageNum--;
         trailSearch(currentPageNum,searchLat,searchLon);
-    };
+        updatePageNum();
 
-    console.log('prev');
+        console.log('prev');
+    };  
 });
 
 
