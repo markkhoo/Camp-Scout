@@ -21,7 +21,7 @@ var weatherIcon = "";
 
 // Update Page Number
 function updatePageNum() {
-    document.getElementById("pageNum").innerHTML = currentPageNum + " of " + maximumPageNum;
+    document.getElementById("pageNum").innerHTML = " " + currentPageNum + " of " + maximumPageNum;
 };
 
 // Wind Direction Solver
@@ -112,19 +112,21 @@ function displaySearches() {
         for (var i = 0; i < storedTrails.length; i++ ) {
 
             // Set attributes in button
-            var recentSearch = document.createElement("button");
+            var recentSearch = document.createElement("span");
             recentSearch.innerHTML = storedTrails[i].name;
             recentSearch.setAttribute("data-lat", storedTrails[i].lat);
             recentSearch.setAttribute("data-lon", storedTrails[i].lon);
             recentSearch.setAttribute("data-id", storedTrails[i].trailID);
+            recentSearch.setAttribute("class","tag is-link is-light is-rounded");
             recentSearch.onclick = clickToPage;
 
             searchHistory.appendChild(recentSearch);
         };
 
         // Create Clear Recent Searches Button
-        var clearButton = document.createElement("button");
+        var clearButton = document.createElement("span");
         clearButton.innerHTML = "Clear Recent Searches";
+        clearButton.setAttribute("class","tag is-danger is-light is-rounded");
         clearButton.onclick = function () {
             localStorage.removeItem("storedTrails");
             searchHistory.innerHTML = "";
@@ -134,7 +136,6 @@ function displaySearches() {
     };
 
 };
-displaySearches();
 
 // Display City Weather
 function displayWeather(data_object) {
@@ -173,6 +174,10 @@ function displayResults(data_object) {
 
     // Update Current City in search results
     document.getElementById("currentCity").innerHTML = currentCity;
+
+    // Display Subtitles on Search
+    document.getElementById("subtitle2").style.setProperty("visibility", "initial");
+    document.getElementById("subtitle3").style.setProperty("visibility", "initial");
 
     // Check for non-zero results
     if (data_object.data != null) {
@@ -280,6 +285,15 @@ function trailSearch(pageNum, lat, lon) {
         displayResults(data);
     });
 };
+
+// INITIALIZE
+function init() {
+    displaySearches();
+
+    document.getElementById("subtitle2").style.setProperty("visibility", "hidden");
+    document.getElementById("subtitle3").style.setProperty("visibility", "hidden");
+};
+init();
 
 // Form Submission
 searchForm.addEventListener('submit', function(event) {
