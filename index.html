@@ -4,53 +4,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./assets/css/reset.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
     <title>Trail Scout</title>
 </head>
 <body>
-    <header>
-        <h1>Trail Scout</h1>
+    <header class="columns has-background-primary-dark">
+        <div class="column">
+            <h1 class="title is-1 has-text-centered has-text-white p-2">Trail Scout</h1>
+        </div>
     </header>
 
-    <div>
+    <div class="columns">
 
-        <form id="location">
-            <input type="text" placeholder="San Francisco">
-            <input type="submit" value="Submit">
+        <div class="column is-3 p-5 has-background-primary-light">
 
-        </form>
+            <form id="location" class="field has-addons">
 
-        <div>
-            <button id="prevBtn">&laquo; PREV &laquo;</button>
-            <p>Page: <span id="pageNum"></span></p>
-            <button id="nextBtn">&raquo; NEXT &raquo;</button>
-        </div>
+                <input class="input" type="text" placeholder="San Francisco">
 
-        <h2>Previous Searches</h2>
+                <input class="button is-info" type="submit" value="Submit">
 
-        <div id="searchHistory">
+            </form>
 
-        </div>
+            <div class="level">
+                <button id="prevBtn" class="pagination-previous level-left">&laquo; PREV &laquo;</button>
+                <p class="level-item">Page: <span id="pageNum"></span></p>
+                <button id="nextBtn" class="pagination-next level-right">&raquo; NEXT &raquo;</button>
+            </div>
 
-    </div>
+            <h2 class="subtitle">Previous Searches</h2>
 
-    <div>
+            <div id="searchHistory" class="tags">
 
-        <h2>Showing Results for <span id="currentCity"></span></h2>
-
-        <div id="currentWeather">
+            </div>
 
         </div>
 
-        <h2>Trails Nearby</h2>
+        <div class="column is-9 p-5 has-background-white-ter">
 
-        <div id="searchResults">
+            <h2 id="subtitle2" class="box subtitle">Showing Results for <span id="currentCity"></span></h2>
+
+            <div id="currentWeather">
+
+            </div>
+
+            <h2 id="subtitle3" class="box subtitle">Trails Nearby</h2>
+
+            <div id="searchResults" class="columns is-6 is-multiline p-3">
+
+            </div>
 
         </div>
-
-    </div>
     
+    </div>
+
 </body>
 
 <script src="./assets/js/script.js"></script>
