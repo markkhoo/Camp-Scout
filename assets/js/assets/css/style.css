@@ -1,0 +1,39 @@
+.trail {
+    color: black;
+    background-color: rgb(82, 189, 100);
+    border-radius: 20px;
+    align-items: center;
+}    
+
+.weather {
+    background-color: rgb(82, 189, 100);
+    border-radius: 20px;
+    margin-right: -200px;
+}
+.columns {
+    column-gap: 10px;
+    margin: auto;
+}
+body {
+    background-color:black;
+}
+h2 {
+    font-size: 30px;
+    color: black;
+}
+.title {
+    color: black;
+    font-size: 50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+}
+img {
+    border-radius: 20px;
+}
+.subtitle {
+    color: black;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.hero {
+    background-color: black;
+}
