@@ -1,7 +1,3 @@
-// ======================================================================================================
-// ==========================================   Actual  Code   ==========================================
-// ======================================================================================================
-
 // Pointers
 var searchForm = document.getElementById("location");
 var searchResults = document.getElementById("searchResults");
@@ -63,8 +59,8 @@ function displayWeather(data_object) {
     var card_wind_all = document.createElement("h3");
 
     card_tempFeel.innerHTML = "Feels like " + tempFeel + " °F";
-    card_temp_min.innerHTML = "min " + temp_min;
-    card_temp_max.innerHTML = "max " + temp_max;
+    card_temp_min.innerHTML = "min " + temp_min + " °F";
+    card_temp_max.innerHTML = "max " + temp_max + " °F";
     card_humidity.innerHTML = humidity + "%";
     card_wind_all.innerHTML = windDirection(wind_deg) + " " + wind_spe + " mph";
 
@@ -96,6 +92,16 @@ function displayResults(data_object) {
             cardResult.setAttribute("data-lat", data_object.data[i].lat);
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
             cardResult.setAttribute("data-id",data_object.data[i].id.toString());
+
+            // Adding the click feature for the card
+            cardResult.onclick = function() {
+                var queryLat = this.getAttribute("data-lat");
+                var queryLon = this.getAttribute("data-lon");
+                var queryID = this.getAttribute("data-id");
+                // console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID}`);
+                var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
+                location.assign(queryUrl);
+            }
 
             var resultName = document.createElement("h4");
             resultName.innerHTML = data_object.data[i].name;
@@ -220,77 +226,3 @@ document.getElementById('prevBtn').addEventListener('click', function(){
         updatePageNum();
     };  
 });
-
-// Card Listener
-searchResults.addEventListener('click', function(event) {
-
-    currentElement = event.target;
-    console.log(currentElement.parentElement.getAttribute("data-id"));
-
-    var data_lat = currentElement.parentElement.getAttribute("data-lat");
-    var data_lon = currentElement.parentElement.getAttribute("data-lon");
-    var data_id = currentElement.parentElement.getAttribute("data-id");
-
-    var queryUrl = "./assets/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
-
-    location.assign(queryUrl);
-    
-    // console.log(location);
-    // var queryTest = "./assets/facility.html"
-    // console.log(location.assign(queryTest));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var currentTemp = 0;
-// var currentHumi = 0;
-// var currentUVI = 0;
-// var currentWindSpe = 0;
-// var currentWindGus = 0;
-// var currentWindDeg = 0;
-
-
-// var keyWeather = "22bb6e2db366aab8539ac22df7b32d3a";
-
-// function getWeather (lat, lon, keyAPI) {
-
-//     var weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=" + keyAPI;
-
-//     fetch(weatherURL)
-//     .then(function(response) {
-//         return response.json();                
-//     })
-//     .then(function(data) {
-//         console.log(data);
-
-//         currentTemp = data.current.temp;
-//         currentHumi = data.current.humidity;
-//         currentUVI = data.current.uvi;
-//         currentWindSpe = data.current.wind_speed;
-//         currentWindGus = data.current.wind_gust;
-//         currentWindDeg = data.current.wind_deg;
-//         console.log(currentTemp, currentHumi, currentUVI, currentWindSpe, currentWindGus, currentWindDeg);
-
-//     })
-//     .catch( err => {
-//         console.log(err);
-//     });
-
-// };
-
-// getWeather(90,43.88037021,keyWeather);
