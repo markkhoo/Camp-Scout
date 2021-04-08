@@ -159,17 +159,25 @@ function displayWeather(data_object) {
     var card_humidity = document.createElement("h3");
     var card_wind_all = document.createElement("h3");
 
+    var card_break001 = document.createElement("br");
+    var card_break002 = document.createElement("br");
+
     card_tempFeel.innerHTML = "Feels like " + Math.round(tempFeel) + " °F";
     card_temp_min.innerHTML = "min " + Math.floor(temp_min) + " °F";
     card_temp_max.innerHTML = "max " + Math.ceil(temp_max) + " °F";
-    card_humidity.innerHTML = "Humidity " + Math.round(humidity) + "%";
-    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + "-" + Math.round(wind_spe) + " mph";
+    card_humidity.innerHTML = "Humidity: " + Math.round(humidity) + "%";
+    card_wind_all.innerHTML = "Wind: " + windDirection(wind_deg) + " " + Math.round(wind_spe) + " mph";
 
     currentWeather.appendChild(card_tempFeel);
     currentWeather.appendChild(card_temp_min);
     currentWeather.appendChild(card_temp_max);
+
+    currentWeather.appendChild(card_break001);
+
     currentWeather.appendChild(card_humidity);
     currentWeather.appendChild(card_wind_all);
+
+    currentWeather.appendChild(card_break002);
 };
 
 // Display City AQI
@@ -185,6 +193,18 @@ function displayAQI(data_object) {
     card_aqi.innerHTML =   "AQI " + aqi;
     card_pm2_5.innerHTML = "PM2.5: " + pm2_5 + " μg/m3";
     card_pm10.innerHTML =  "PM10: " + pm10 + " μg/m3";
+
+    if (aqi == 1) {
+        card_aqi.style.setProperty("background-color", "rgb(20,221,240)");
+    } else if (aqi == 2) {
+        card_aqi.style.setProperty("background-color", "rgb(45,247,51)");
+    } else if (aqi == 3) {
+        card_aqi.style.setProperty("background-color", "rgb(224,210,51)");
+    } else if (aqi == 4) {
+        card_aqi.style.setProperty("background-color", "rgb(247,148,45)");
+    } else if (aqi == 5) {
+        card_aqi.style.setProperty("background-color", "rgb(240,41,70)");
+    };
 
     currentWeather.appendChild(card_aqi);
     currentWeather.appendChild(card_pm2_5);
