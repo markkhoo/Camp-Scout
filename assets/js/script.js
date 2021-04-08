@@ -49,7 +49,32 @@ function windDirection(deg) {
     } else {
         return ""
     };
-}
+};
+
+// Card Image Function
+function imageWeather (icon) {
+    if (icon == "01d" || icon == "01n") {
+        return 'url("./assets/images/clear_sky.jpeg")';
+    } else if (icon == "02d" || icon == "02n") {
+        return 'url("./assets/images/few_clouds.jpeg")';
+    } else if (icon == "03d" || icon == "03n") {
+        return 'url("./assets/images/scattered_clouds.jpeg")';
+    } else if (icon == "04d" || icon == "04n") {
+        return 'url("./assets/images/broken_clouds.jpeg")';
+    } else if (icon == "09d" || icon == "09n") {
+        return 'url("./assets/images/light_rain.jpeg")';
+    } else if (icon == "10d" || icon == "10n") {
+        return 'url("./assets/images/rain.jpeg")';
+    } else if (icon == "11d" || icon == "11n") {
+        return 'url("./assets/images/thunderstorm.jpeg")';
+    } else if (icon == "13d" || icon == "13n") {
+        return 'url("./assets/images/snow.jpeg")';
+    } else if (icon == "50d" || icon == "50n") {
+        return 'url("./assets/images/mist.jpeg")';
+    } else {
+        return 'url("./assets/images/white.jpeg")';
+    };
+};
 
 // Function for onclick... Goes to second page
 function clickToPage() {
@@ -158,7 +183,6 @@ function displayWeather(data_object) {
     var card_temp_max = document.createElement("h3");
     var card_humidity = document.createElement("h3");
     var card_wind_all = document.createElement("h3");
-
     var card_break001 = document.createElement("br");
     var card_break002 = document.createElement("br");
 
@@ -171,13 +195,12 @@ function displayWeather(data_object) {
     currentWeather.appendChild(card_tempFeel);
     currentWeather.appendChild(card_temp_min);
     currentWeather.appendChild(card_temp_max);
-
     currentWeather.appendChild(card_break001);
-
     currentWeather.appendChild(card_humidity);
     currentWeather.appendChild(card_wind_all);
-
     currentWeather.appendChild(card_break002);
+
+    currentWeather.style.setProperty("background-image", imageWeather(weatherIcon));
 };
 
 // Display City AQI
