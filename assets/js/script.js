@@ -19,6 +19,10 @@ var wind_deg = 0;
 var wind_spe = 0;
 var weatherIcon = "";
 
+var aqi = 0;
+var pm2_5 = 0;
+var pm10 = 0;
+
 // Update Page Number
 function updatePageNum() {
     document.getElementById("pageNum").innerHTML = " " + currentPageNum + " of " + maximumPageNum;
@@ -168,6 +172,25 @@ function displayWeather(data_object) {
     currentWeather.appendChild(card_wind_all);
 };
 
+// Display City AQI
+function displayAQI(data_object) {
+    aqi = data_object.list[0].main.aqi;
+    pm2_5 = data_object.list[0].components.pm2_5;
+    pm10 = data_object.list[0].components.pm10;
+
+    var card_aqi =   document.createElement("h3");
+    var card_pm2_5 = document.createElement("h3");
+    var card_pm10 =  document.createElement("h3");
+
+    card_aqi.innerHTML =   "AQI " + aqi;
+    card_pm2_5.innerHTML = "PM2.5: " + pm2_5 + " μg/m3";
+    card_pm10.innerHTML =  "PM10: " + pm10 + " μg/m3";
+
+    currentWeather.appendChild(card_aqi);
+    currentWeather.appendChild(card_pm2_5);
+    currentWeather.appendChild(card_pm10);
+};
+
 // Display Cards
 function displayResults(data_object) {
 
@@ -262,11 +285,11 @@ function weatherSearch(cityName) {
         // Run Trail Search Function and Update Page Number
         trailSearch(currentPageNum,searchLat,searchLon);
 
-        // Run Air Pollution Search
-        airPollutionSearch(searchLat,searchLon,keyWeather);
-
         // Display Weather Information
         displayWeather(data);
+        
+        // Run Air Pollution Search (MUST run AFTER disaplayWeather)
+        airPollutionSearch(searchLat,searchLon,keyWeather);
     })
     .catch(err => {
         console.log(err);
@@ -280,6 +303,7 @@ function airPollutionSearch (lat, lon, keyAPI) {
         return response.json();
     })
     .then(function(data) {
+        displayAQI(data);
         console.log(data);
     });
 };
