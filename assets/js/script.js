@@ -1,9 +1,7 @@
-// ======================================================================================================
-// ==========================================   Actual  Code   ==========================================
-// ======================================================================================================
-
 // Pointers
 var searchForm = document.getElementById("location");
+var searchHistory = document.getElementById("searchHistory");
+var currentWeather = document.getElementById("currentWeather");
 var searchResults = document.getElementById("searchResults");
 
 // Global Variables
@@ -21,6 +19,11 @@ var wind_deg = 0;
 var wind_spe = 0;
 var weatherIcon = "";
 
+// Update Page Number
+function updatePageNum() {
+    document.getElementById("pageNum").innerHTML = currentPageNum + " of " + maximumPageNum;
+};
+
 // Wind Direction Solver
 function windDirection(deg) {
     if (deg < 23 || deg >= 338) {
@@ -37,10 +40,101 @@ function windDirection(deg) {
         return "SW"
     } else if (deg < 293) {
         return "W"
+    } else if (deg < 338) {
+        return "WE"
     } else {
-
+        return ""
     };
 }
+
+// Function for onclick... Goes to second page
+function clickToPage() {
+    var queryLat =  this.getAttribute("data-lat");
+    var queryLon =  this.getAttribute("data-lon");
+    var queryID =   this.getAttribute("data-id");
+    var queryName = this.getAttribute("data-name");
+    var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
+    // This Loads the other page
+    location.assign(queryUrl);
+    
+    storeSearches(queryName, queryLat, queryLon, queryID);
+    // console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID} \nname: ${queryName}`);
+};
+
+// Store Previous Searches
+function storeSearches(name, lat, lon, trailID) {
+    // Store INFO into object
+    var currentTrail = {
+        name: name,
+        lat: lat,
+        lon: lon,
+        trailID: trailID
+    };
+
+    // Pull stored trail info from local storage
+    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
+
+    // Check if stored Trails exist
+    if (storedTrails != null) {
+        
+        // Create array of name for duplicate check below
+        var nameCheck = [];
+        for (var i = 0; i < storedTrails.length; i++ ) {
+            nameCheck.push(storedTrails[i].name);
+        };
+
+        // Check for duplicate Trails
+        if (!nameCheck.includes(name)) {
+
+            // Push into stored Trails and store
+            storedTrails.push(currentTrail);
+            localStorage.setItem("storedTrails", JSON.stringify(storedTrails));
+        };
+
+    } else {
+
+        // Push new object into an empty array and store
+        var stringOTrails = [];
+        stringOTrails.push(currentTrail);
+        localStorage.setItem("storedTrails", JSON.stringify(stringOTrails)); 
+    };
+
+};
+
+// Display Previous Searches
+function displaySearches() {
+
+    // Pull stored trail info from local storage
+    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
+
+    // Check is stored Trails exist
+    if (storedTrails != null) {      
+        for (var i = 0; i < storedTrails.length; i++ ) {
+
+            // Set attributes in button
+            var recentSearch = document.createElement("button");
+            recentSearch.innerHTML = storedTrails[i].name;
+            recentSearch.setAttribute("data-lat", storedTrails[i].lat);
+            recentSearch.setAttribute("data-lon", storedTrails[i].lon);
+            recentSearch.setAttribute("data-id", storedTrails[i].trailID);
+            recentSearch.onclick = clickToPage;
+
+            searchHistory.appendChild(recentSearch);
+        };
+
+        // Create Clear Recent Searches Button
+        var clearButton = document.createElement("button");
+        clearButton.innerHTML = "Clear Recent Searches";
+        clearButton.onclick = function () {
+            localStorage.removeItem("storedTrails");
+            searchHistory.innerHTML = "";
+        };
+
+        searchHistory.appendChild(clearButton);
+    };
+
+};
+displaySearches();
 
 // Display City Weather
 function displayWeather(data_object) {
@@ -52,19 +146,23 @@ function displayWeather(data_object) {
     wind_spe = data_object.wind.speed;
     weatherIcon = data_object.weather[0].icon;
 
-    // console.log(tempFeel, temp_min, temp_max, humidity, wind_spe, wind_deg, weatherIcon);
     var card_tempFeel = document.createElement("h3");
     var card_temp_min = document.createElement("h3");
     var card_temp_max = document.createElement("h3");
     var card_humidity = document.createElement("h3");
     var card_wind_all = document.createElement("h3");
 
-    card_tempFeel.innerHTML = "Feels like " + tempFeel + " °F";
-    card_temp_min.innerHTML = "min " + temp_min;
-    card_temp_max.innerHTML = "max " + temp_max;
-    card_humidity.innerHTML = humidity + "%";
-    card_wind_all.innerHTML = " " + wind_spe + " mph";
+    card_tempFeel.innerHTML = "Feels like " + Math.round(tempFeel) + " °F";
+    card_temp_min.innerHTML = "min " + Math.floor(temp_min) + " °F";
+    card_temp_max.innerHTML = "max " + Math.ceil(temp_max) + " °F";
+    card_humidity.innerHTML = "Humidity " + Math.round(humidity) + "%";
+    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + " " + Math.round(wind_spe) + " mph";
 
+    currentWeather.appendChild(card_tempFeel);
+    currentWeather.appendChild(card_temp_min);
+    currentWeather.appendChild(card_temp_max);
+    currentWeather.appendChild(card_humidity);
+    currentWeather.appendChild(card_wind_all);
 };
 
 // Display Cards
@@ -87,7 +185,9 @@ function displayResults(data_object) {
             cardResult.setAttribute("class", "Card");
             cardResult.setAttribute("data-lat", data_object.data[i].lat);
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
-            cardResult.setAttribute("data-id",data_object.data[i].id.toString());
+            cardResult.setAttribute("data-id",  data_object.data[i].id.toString());
+            cardResult.setAttribute("data-name", data_object.data[i].name);
+            cardResult.onclick = clickToPage;
 
             var resultName = document.createElement("h4");
             resultName.innerHTML = data_object.data[i].name;
@@ -150,7 +250,6 @@ function weatherSearch(cityName) {
 
         // Run Trail Search Function and Update Page Number
         trailSearch(currentPageNum,searchLat,searchLon);
-        updatePageNum();
 
         // Display Weather Information
         displayWeather(data);
@@ -175,15 +274,11 @@ function trailSearch(pageNum, lat, lon) {
     })
     .then(function (data){
         maximumPageNum = Math.ceil(data.results / results_Number);
+        updatePageNum();
         console.log(data);
 
         displayResults(data);
     });
-};
-
-// Update Page Number
-function updatePageNum() {
-    document.getElementById("pageNum").innerHTML = currentPageNum;
 };
 
 // Form Submission
@@ -212,77 +307,3 @@ document.getElementById('prevBtn').addEventListener('click', function(){
         updatePageNum();
     };  
 });
-
-// Card Listener
-searchResults.addEventListener('click', function(event) {
-
-    currentElement = event.target;
-    console.log(currentElement.parentElement.getAttribute("data-id"));
-
-    var data_lat = currentElement.parentElement.getAttribute("data-lat");
-    var data_lon = currentElement.parentElement.getAttribute("data-lon");
-    var data_id = currentElement.parentElement.getAttribute("data-id");
-
-    var queryUrl = "./assets/js/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
-
-    location.assign(queryUrl);
-    
-    // console.log(location);
-    // var queryTest = "./assets/facility.html"
-    // console.log(location.assign(queryTest));
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var currentTemp = 0;
-// var currentHumi = 0;
-// var currentUVI = 0;
-// var currentWindSpe = 0;
-// var currentWindGus = 0;
-// var currentWindDeg = 0;
-
-
-// var keyWeather = "22bb6e2db366aab8539ac22df7b32d3a";
-
-// function getWeather (lat, lon, keyAPI) {
-
-//     var weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=" + keyAPI;
-
-//     fetch(weatherURL)
-//     .then(function(response) {
-//         return response.json();                
-//     })
-//     .then(function(data) {
-//         console.log(data);
-
-//         currentTemp = data.current.temp;
-//         currentHumi = data.current.humidity;
-//         currentUVI = data.current.uvi;
-//         currentWindSpe = data.current.wind_speed;
-//         currentWindGus = data.current.wind_gust;
-//         currentWindDeg = data.current.wind_deg;
-//         console.log(currentTemp, currentHumi, currentUVI, currentWindSpe, currentWindGus, currentWindDeg);
-
-//     })
-//     .catch( err => {
-//         console.log(err);
-//     });
-
-// };
-
-// getWeather(90,43.88037021,keyWeather);
