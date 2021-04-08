@@ -95,13 +95,13 @@ function searchAPI (queryLat, queryLong,) {
 	}
 	//do the work of appending trail info to page
 	function appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl){
-			$(trailStats).append("<h2 class='subtitle is-4'>" + trailName + "</h2>");
+			$(trailStats).append("<h2 class='title is-2'>" + trailName + "</h2>");
 			$(trailStats).append("<img src='" + trailImage + "'/>");
-			$(trailStats).append("<p>Trail Description: " + trailDescription + "</p>");
-			$(trailStats).append("<h5> Trail City: " + trailCity + "</h5>");
-			$(trailStats).append("<h5> Difficulty Level: " + trailDifficulty + "</h5>");
-			$(trailStats).append("<h5> Trail Rating: " + trailRating+ "</h5>");
-			$(trailStats).append("<p><a href='" +trailUrl+ "'>For More Information Click Here</a></p>")	
+			$(trailStats).append("<p class='subtitle is-4'><strong>Trail Description:</strong> " + trailDescription + "</p>");
+			$(trailStats).append("<p class='subtitle is-4'><strong> Trail City:</strong> " + trailCity + "</h5>");
+			$(trailStats).append("<p class='subtitle is-4'><strong> Difficulty Level:</strong> " + trailDifficulty + "</p>");
+			$(trailStats).append("<p class='subtitle is-4'><strong> Trail Rating:</strong> " + trailRating+ "</p>");
+			$(trailStats).append("<p><a href='" +trailUrl+ "'><strong>For More Information Click Here</strong></a></p>")	
 	}
 
 getParameters();

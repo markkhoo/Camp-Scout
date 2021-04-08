@@ -17,3 +17,20 @@
 body {
     background-color: rgb(196, 235, 181);
 }
+h2 {
+    font-size: 30px;
+    color: black;
+}
+.title {
+    color: black;
+    font-size: 50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+}
+img {
+    border-radius: 20px;
+}
+.subtitle {
+    color: black;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
