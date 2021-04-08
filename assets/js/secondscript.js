@@ -53,6 +53,36 @@ function searchAPI (queryLat, queryLong,) {
         currentWindGus = data.current.wind_gust;
         currentWindDeg = data.current.wind_deg;
 
+		var foreCastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=22bb6e2db366aab8539ac22df7b32d3a";
+		console.log("forecast URL", foreCastUrl);
+		
+		fetch(foreCastUrl)
+		.then(function (response) {
+			return response.json();
+		})
+		.then(function(forecastData) {
+			console.log("forecastdata", forecastData)
+		
+
+		var foreCastData = forecastData.list.filter((listItem) => listItem.dt_txt.indexOf("00:00:00") > -1);
+		console.log("forecastdata***", foreCastData);
+		let cards = ""
+		foreCastData.forEach(datum => {
+			cards+=
+			`
+			<div class="column>
+			<div class="card">
+			<h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
+			<p>Temperature F: ${datum.main.temp_max}</p>
+            <p>Humidity: ${datum.main.humidity}</p>
+            <p>Wind Speed: ${datum.wind.speed}</p>
+            <p><img src="http://openweathermap.org/img/w/${datum.weather[0].icon}.png"/></p>
+			</div>
+			</div>
+			`;
+		})
+		$(".forecast-container").html(cards);
+
 		//fetches the trail API
 		fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {
 			"method": "GET",
@@ -82,6 +112,7 @@ function searchAPI (queryLat, queryLong,) {
 			appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
 			//append trail info with arguments
 			 appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl);
+		})
 		})	
 		})
 	}
