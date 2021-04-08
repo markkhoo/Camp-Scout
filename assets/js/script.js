@@ -2,6 +2,10 @@
 // ==========================================   Actual  Code   ==========================================
 // ======================================================================================================
 
+// Pointers
+var searchForm = document.getElementById("location");
+var searchResults = document.getElementById("searchResults");
+
 // Global Variables
 var searchLat = 0;
 var searchLon = 0;
@@ -10,8 +14,6 @@ var currentPageNum = 0;
 var maximumPageNum = 0;
 
 // Display Cards
-var searchResults = document.getElementById("searchResults");
-
 function displayResults(data_object) {
 
     // Clear Previous Results if any
@@ -28,6 +30,7 @@ function displayResults(data_object) {
 
             // Append Individual Card Results
             var cardResult = document.createElement("div");
+            cardResult.setAttribute("class", "Card");
             cardResult.setAttribute("data-lat", data_object.data[i].lat);
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
             cardResult.setAttribute("data-id",data_object.data[i].id.toString());
@@ -93,8 +96,6 @@ function updatePageNum() {
 };
 
 // Form Submission
-var searchForm = document.getElementById("location");
-
 searchForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -136,8 +137,6 @@ document.getElementById('nextBtn').addEventListener('click', function(){
         currentPageNum++;
         trailSearch(currentPageNum,searchLat,searchLon);
         updatePageNum();
-
-        console.log('next');
     };
 });
 
@@ -147,12 +146,19 @@ document.getElementById('prevBtn').addEventListener('click', function(){
         currentPageNum--;
         trailSearch(currentPageNum,searchLat,searchLon);
         updatePageNum();
-
-        console.log('prev');
     };  
 });
 
+// Card Listener
+searchResults.addEventListener('click', function(event) {
 
+    currentElement = event.target;
+    console.log(currentElement);
+    
+    // console.log(location);
+    // var queryTest = "./assets/facility.html"
+    // console.log(location.assign(queryTest));
+});
 
 
 
