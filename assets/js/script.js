@@ -1,7 +1,8 @@
 // Pointers
 var searchForm = document.getElementById("location");
-var searchResults = document.getElementById("searchResults");
+var searchHistory = document.getElementById("searchHistory");
 var currentWeather = document.getElementById("currentWeather");
+var searchResults = document.getElementById("searchResults");
 
 // Global Variables
 var currentCity = "";
@@ -46,6 +47,20 @@ function windDirection(deg) {
     };
 }
 
+// Function for onclick... Goes to second page
+function clickToPage() {
+    var queryLat =  this.getAttribute("data-lat");
+    var queryLon =  this.getAttribute("data-lon");
+    var queryID =   this.getAttribute("data-id");
+    var queryName = this.getAttribute("data-name");
+    var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
+    // This Loads the other page
+    location.assign(queryUrl);
+    
+    storeSearches(queryName, queryLat, queryLon, queryID);
+    // console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID} \nname: ${queryName}`);
+};
+
 // Store Previous Searches
 function storeSearches(name, lat, lon, trailID) {
     // Store INFO into object
@@ -85,6 +100,31 @@ function storeSearches(name, lat, lon, trailID) {
     };
 
 };
+
+// Display Previous Searches
+function displaySearches() {
+
+    // Pull stored trail info from local storage
+    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
+
+    // Check is stored Trails exist
+    if (storedTrails != null) {      
+        for (var i = 0; i < storedTrails.length; i++ ) {
+
+            // Set attributes in button
+            var recentSearch = document.createElement("button")
+            recentSearch.innerHTML = storedTrails[i].name;
+            recentSearch.setAttribute("data-lat", storedTrails[i].lat);
+            recentSearch.setAttribute("data-lon", storedTrails[i].lon);
+            recentSearch.setAttribute("data-id", storedTrails[i].trailID);
+            recentSearch.onclick = clickToPage;
+
+            searchHistory.appendChild(recentSearch);
+        };
+    };
+
+};
+displaySearches();
 
 // Display City Weather
 function displayWeather(data_object) {
@@ -137,20 +177,7 @@ function displayResults(data_object) {
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
             cardResult.setAttribute("data-id",  data_object.data[i].id.toString());
             cardResult.setAttribute("data-name", data_object.data[i].name);
-
-            // Adding the click feature for the card
-            cardResult.onclick = function() {
-                var queryLat =  this.getAttribute("data-lat");
-                var queryLon =  this.getAttribute("data-lon");
-                var queryID =   this.getAttribute("data-id");
-                var queryName = this.getAttribute("data-name");
-                // var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
-                // This Loads the other page
-                // location.assign(queryUrl);
-                
-                storeSearches(queryName, queryLat, queryLon, queryID);
-                console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID} \nname: ${queryName}`);
-            }
+            cardResult.onclick = clickToPage;
 
             var resultName = document.createElement("h4");
             resultName.innerHTML = data_object.data[i].name;
