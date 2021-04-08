@@ -13,6 +13,11 @@ var currentCity = "";
 var currentPageNum = 0;
 var maximumPageNum = 0;
 
+// Display City Weather
+// function displayWeather() {
+
+// };
+
 // Display Cards
 function displayResults(data_object) {
 
@@ -69,6 +74,40 @@ function displayResults(data_object) {
     };
 };
 
+// Weather Search Function
+function weatherSearch(cityName) {
+
+    // Construct URL to be fetched
+    var keyWeather = "22bb6e2db366aab8539ac22df7b32d3a"
+    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + keyWeather;
+
+    fetch(weatherURL)
+    .then(function(response) {
+
+        // Checks for valid City
+        if (response.status == 200) {
+            return response.json();
+        } else {
+            return null;
+        };
+    })
+    .then(function(data) {
+        console.log(data);
+
+        currentCity = cityName.toUpperCase();
+        searchLat = data.coord.lat;
+        searchLon = data.coord.lon;
+        currentPageNum = 1;
+
+        // Run Trail Search Function and Update Page Number
+        trailSearch(currentPageNum,searchLat,searchLon);
+        updatePageNum();
+    })
+    .catch(err => {
+        console.log(err);
+    });
+};
+
 // Trail Search Function
 function trailSearch(pageNum, lat, lon) {
     var results_Number = 12;
@@ -99,36 +138,9 @@ function updatePageNum() {
 searchForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Construct URL to be fetched
-    var cityName = searchForm.firstElementChild.value.toLowerCase();
-    var keyWeather = "22bb6e2db366aab8539ac22df7b32d3a"
-    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + keyWeather;
+    var cityQuery = searchForm.firstElementChild.value.toLowerCase();
 
-    fetch(weatherURL)
-    .then(function(response) {
-
-        // Checks for valid City
-        if (response.status == 200) {
-            return response.json();
-        } else {
-            return null;
-        };
-    })
-    .then(function(data) {
-        console.log(data);
-
-        currentCity = cityName.toUpperCase();
-        searchLat = data.coord.lat;
-        searchLon = data.coord.lon;
-        currentPageNum = 1;
-
-        trailSearch(currentPageNum,searchLat,searchLon);
-        updatePageNum();
-    })
-    .catch(err => {
-        console.log(err);
-    });
-
+    weatherSearch(cityQuery);
 });
 
 // Next Button
