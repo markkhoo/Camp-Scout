@@ -314,6 +314,10 @@ function weatherSearch(cityName) {
         if (response.status == 200) {
             return response.json();
         } else {
+
+            // SWEET ALERT modal
+            swal("Invalid City Name", "Please input another city name", "error");
+
             return null;
         };
     })
