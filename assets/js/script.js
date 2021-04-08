@@ -21,7 +21,7 @@ var weatherIcon = "";
 
 // Update Page Number
 function updatePageNum() {
-    document.getElementById("pageNum").innerHTML = currentPageNum;
+    document.getElementById("pageNum").innerHTML = currentPageNum + " of " + maximumPageNum;
 };
 
 // Wind Direction Solver
@@ -112,7 +112,7 @@ function displaySearches() {
         for (var i = 0; i < storedTrails.length; i++ ) {
 
             // Set attributes in button
-            var recentSearch = document.createElement("button")
+            var recentSearch = document.createElement("button");
             recentSearch.innerHTML = storedTrails[i].name;
             recentSearch.setAttribute("data-lat", storedTrails[i].lat);
             recentSearch.setAttribute("data-lon", storedTrails[i].lon);
@@ -121,6 +121,16 @@ function displaySearches() {
 
             searchHistory.appendChild(recentSearch);
         };
+
+        // Create Clear Recent Searches Button
+        var clearButton = document.createElement("button");
+        clearButton.innerHTML = "Clear Recent Searches";
+        clearButton.onclick = function () {
+            localStorage.removeItem("storedTrails");
+            searchHistory.innerHTML = "";
+        };
+
+        searchHistory.appendChild(clearButton);
     };
 
 };
@@ -142,11 +152,11 @@ function displayWeather(data_object) {
     var card_humidity = document.createElement("h3");
     var card_wind_all = document.createElement("h3");
 
-    card_tempFeel.innerHTML = "Feels like " + tempFeel + " °F";
-    card_temp_min.innerHTML = "min " + temp_min + " °F";
-    card_temp_max.innerHTML = "max " + temp_max + " °F";
-    card_humidity.innerHTML = humidity + "%";
-    card_wind_all.innerHTML = windDirection(wind_deg) + " " + wind_spe + " mph";
+    card_tempFeel.innerHTML = "Feels like " + Math.round(tempFeel) + " °F";
+    card_temp_min.innerHTML = "min " + Math.floor(temp_min) + " °F";
+    card_temp_max.innerHTML = "max " + Math.ceil(temp_max) + " °F";
+    card_humidity.innerHTML = "Humidity " + Math.round(humidity) + "%";
+    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + " " + Math.round(wind_spe) + " mph";
 
     currentWeather.appendChild(card_tempFeel);
     currentWeather.appendChild(card_temp_min);
@@ -240,7 +250,6 @@ function weatherSearch(cityName) {
 
         // Run Trail Search Function and Update Page Number
         trailSearch(currentPageNum,searchLat,searchLon);
-        updatePageNum();
 
         // Display Weather Information
         displayWeather(data);
@@ -265,6 +274,7 @@ function trailSearch(pageNum, lat, lon) {
     })
     .then(function (data){
         maximumPageNum = Math.ceil(data.results / results_Number);
+        updatePageNum();
         console.log(data);
 
         displayResults(data);
