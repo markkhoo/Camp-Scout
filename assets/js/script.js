@@ -7,16 +7,65 @@ var searchForm = document.getElementById("location");
 var searchResults = document.getElementById("searchResults");
 
 // Global Variables
+var currentCity = "";
 var searchLat = 0;
 var searchLon = 0;
-var currentCity = "";
 var currentPageNum = 0;
 var maximumPageNum = 0;
 
-// Display City Weather
-// function displayWeather() {
+var tempFeel = 0;
+var temp_min = 0;
+var temp_max = 0;
+var humidity = 0;
+var wind_deg = 0;
+var wind_spe = 0;
+var weatherIcon = "";
 
-// };
+// Wind Direction Solver
+function windDirection(deg) {
+    if (deg < 23 || deg >= 338) {
+        return "N"
+    } else if (deg < 68) {
+        return "NE"
+    } else if (deg < 113) {
+        return "E"
+    } else if (deg < 153) {
+        return "SE"
+    } else if (deg < 203) {
+        return "S"
+    } else if (deg < 248) {
+        return "SW"
+    } else if (deg < 293) {
+        return "W"
+    } else {
+
+    };
+}
+
+// Display City Weather
+function displayWeather(data_object) {
+    tempFeel = data_object.main.feels_like;
+    temp_min = data_object.main.temp_min;
+    temp_max = data_object.main.temp_max;
+    humidity = data_object.main.humidity;
+    wind_deg = data_object.wind.deg;
+    wind_spe = data_object.wind.speed;
+    weatherIcon = data_object.weather[0].icon;
+
+    // console.log(tempFeel, temp_min, temp_max, humidity, wind_spe, wind_deg, weatherIcon);
+    var card_tempFeel = document.createElement("h3");
+    var card_temp_min = document.createElement("h3");
+    var card_temp_max = document.createElement("h3");
+    var card_humidity = document.createElement("h3");
+    var card_wind_all = document.createElement("h3");
+
+    card_tempFeel.innerHTML = "Feels like " + tempFeel + " °F";
+    card_temp_min.innerHTML = "min " + temp_min;
+    card_temp_max.innerHTML = "max " + temp_max;
+    card_humidity.innerHTML = humidity + "%";
+    card_wind_all.innerHTML = " " + wind_spe + " mph";
+
+};
 
 // Display Cards
 function displayResults(data_object) {
@@ -102,6 +151,9 @@ function weatherSearch(cityName) {
         // Run Trail Search Function and Update Page Number
         trailSearch(currentPageNum,searchLat,searchLon);
         updatePageNum();
+
+        // Display Weather Information
+        displayWeather(data);
     })
     .catch(err => {
         console.log(err);
@@ -165,7 +217,15 @@ document.getElementById('prevBtn').addEventListener('click', function(){
 searchResults.addEventListener('click', function(event) {
 
     currentElement = event.target;
-    console.log(currentElement);
+    console.log(currentElement.parentElement.getAttribute("data-id"));
+
+    var data_lat = currentElement.parentElement.getAttribute("data-id");
+    var data_lon = currentElement.parentElement.getAttribute("data-id");
+    var data_id = currentElement.parentElement.getAttribute("data-id");
+
+    var queryUrl = "./assets/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
+
+    location.assign(queryUrl);
     
     // console.log(location);
     // var queryTest = "./assets/facility.html"
