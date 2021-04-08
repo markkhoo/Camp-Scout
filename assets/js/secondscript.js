@@ -70,8 +70,8 @@ function searchAPI (queryLat, queryLong,) {
 		foreCastData.forEach(datum => {
 			cards+=
 			`
-			<div class="column>
-			<div class="card">
+			<div class="column is-12">
+			<div class="card column">
 			<h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
 			<p>Temperature F: ${datum.main.temp_max}</p>
             <p>Humidity: ${datum.main.humidity}</p>
@@ -80,8 +80,8 @@ function searchAPI (queryLat, queryLong,) {
 			</div>
 			</div>
 			`;
-		})
-		$(".forecast-container").html(cards);
+		});
+		$(".weather").html(cards);
 
 		//fetches the trail API
 		fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {
