@@ -180,6 +180,7 @@ function displayResults(data_object) {
     // Display Subtitles on Search
     document.getElementById("subtitle2").style.setProperty("visibility", "initial");
     document.getElementById("subtitle3").style.setProperty("visibility", "initial");
+    document.getElementById("currentWeather").style.setProperty("visibility", "initial");
 
     // Check for non-zero results
     if (data_object.data != null) {
@@ -261,11 +262,25 @@ function weatherSearch(cityName) {
         // Run Trail Search Function and Update Page Number
         trailSearch(currentPageNum,searchLat,searchLon);
 
+        // Run Air Pollution Search
+        airPollutionSearch(searchLat,searchLon,keyWeather);
+
         // Display Weather Information
         displayWeather(data);
     })
     .catch(err => {
         console.log(err);
+    });
+};
+
+// Air Pollution Search Function
+function airPollutionSearch (lat, lon, keyAPI) {
+    fetch("https://api.openweathermap.org/data/2.5/air_pollution?lat=" + lat + "&lon=" + lon + "&appid=" + keyAPI)
+    .then(response => {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data);
     });
 };
 
@@ -282,7 +297,7 @@ function trailSearch(pageNum, lat, lon) {
     .then(response => {
         return response.json();
     })
-    .then(function (data){
+    .then(function(data) {
         maximumPageNum = Math.ceil(data.results / results_Number);
         updatePageNum();
         console.log(data);
@@ -297,6 +312,7 @@ function init() {
 
     document.getElementById("subtitle2").style.setProperty("visibility", "hidden");
     document.getElementById("subtitle3").style.setProperty("visibility", "hidden");
+    document.getElementById("currentWeather").style.setProperty("visibility", "hidden");
 };
 init();
 
