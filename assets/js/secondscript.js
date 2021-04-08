@@ -1,15 +1,16 @@
+var trail;
 function getParameters() {
 	//get search parameters out of URL
 	var searchParamsArray = document.location.search.split("&");
 
 	//Get the latitude and longitude values
-	var queryLat = 34.0522 //searchParamsArray[0].split("=").pop();
+	var queryLat = 34.0522  //searchParamsArray[0].split("=").pop();
 	var queryLong = -118.2437 //searchParamsArray[1].split("=").pop();
-	var trailID = 
+	trailID = 283104//searchParamsArray[2].split("=").pop();
 	searchAPI (queryLat, queryLong);
 }
-
-var weatherStats = $(".weather")
+var trailStats = $(".trail");
+var weatherStats = $(".weather");
 var currentTemp = 0;
 var currentHumi = 0;
 var currentUVI = 0;
@@ -17,8 +18,7 @@ var currentWindSpe = 0;
 var currentWindGus = 0;
 var currentWindDeg = 0;
 var keyAPI = "22bb6e2db366aab8539ac22df7b32d3a";
-var lat = 34.0522;
-var long = -118.2437;
+
 
 function searchAPI (queryLat, queryLong,) {
     var weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=" + keyAPI;
@@ -37,7 +37,7 @@ function searchAPI (queryLat, queryLong,) {
         currentWindDeg = data.current.wind_deg;
 
 		//fetches the trail API
-		fetch("https://trailapi-trailapi.p.rapidapi.com/trails/283104", {
+		fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {
 			"method": "GET",
 			"headers": {
 				"x-rapidapi-key": "6cbc683214mshdf5038bf7d4e267p15a6f0jsn91fc8c373911",
@@ -49,23 +49,43 @@ function searchAPI (queryLat, queryLong,) {
 		})
 			.then(function(trailData) {
 			console.log("trail Data", trailData);
+				//display parameters of the trail
+				trailName = trailData.data[0].name;
+				trailImage = trailData.data[0].thumbnail;
+				trailDescription = trailData.data[0].description;
+				trailCity = trailData.data[0].city;
+				trailDifficulty = trailData.data[0].difficulty;
+				trailRating = trailData.data[0].rating;
+				trailUrl = trailData.data[0].url;
+				console.log(trailImage);
+
+
+
 			//append weather info
+			appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
 			//append trail info with arguments
-			appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe, currentWindGus); 
-			appendTrailInfo();
+			 appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl);
 		})	
 		})
 	}
 			//append elements to the HTML
-	function appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe, currentWindGus){ 
+	function appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe){ 
 			$(weatherStats).append("<h5> Temperature F: " + currentTemp + "</h5>");
 			$(weatherStats).append("<h5> Current Humidity: " + currentHumi + "</h5>");
 			$(weatherStats).append("<h5> Current UVI: " + currentUVI + "</h5>");
 			$(weatherStats).append("<h5> Current Wind Speed: " + currentWindSpe + " mph </h5>");
 			
 	}
-	function appendTrailInfo(trailName, ){
-		//do the work of appending to page the trail ino
+	//do the work of appending trail info to page
+	function appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl){
+			$(trailStats).append("<h2>" + trailName + "</h2>");
+			$(trailStats).append("<p><img src='" + trailImage + "'/></p>");
+			$(trailStats).append("<p>Trail Description: " + trailDescription + "</p>");
+			$(trailStats).append("<p> Trail City: " + trailCity + "</p>");
+			$(trailStats).append("<p> Difficulty Level: " + trailDifficulty + "</p>");
+			$(trailStats).append("<p> Trail Rating: " + trailRating+ "</p>");
+			$(trailStats).append("<p> For More Information Visit: " + trailUrl + "</p>")
+		
 	}
 
 getParameters();
