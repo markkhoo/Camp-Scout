@@ -87,7 +87,7 @@ function searchAPI (queryLat, queryLong,) {
 	}
 			//append elements to the HTML
 	function appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe){ 
-			$(weatherStats).append("<h5> Temperature F: " + currentTemp + "</h5>");
+			$(weatherStats).append("<h2> Temperature F: " + currentTemp + "</h2>");
 			$(weatherStats).append("<h5> Current Humidity: " + currentHumi + "</h5>");
 			$(weatherStats).append("<h5> Current UVI: " + currentUVI + "</h5>");
 			$(weatherStats).append("<h5> Current Wind Speed: " + currentWindSpe + " mph </h5>");
@@ -95,14 +95,13 @@ function searchAPI (queryLat, queryLong,) {
 	}
 	//do the work of appending trail info to page
 	function appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl){
-			$(trailStats).append("<h2>" + trailName + "</h2>");
+			$(trailStats).append("<h2 class='subtitle is-4'>" + trailName + "</h2>");
 			$(trailStats).append("<img src='" + trailImage + "'/>");
 			$(trailStats).append("<p>Trail Description: " + trailDescription + "</p>");
-			$(trailStats).append("<p> Trail City: " + trailCity + "</p>");
-			$(trailStats).append("<p> Difficulty Level: " + trailDifficulty + "</p>");
-			$(trailStats).append("<p> Trail Rating: " + trailRating+ "</p>");
-			$(trailStats).append("<p> For More Information Visit: " + trailUrl + "</p>")
-		
+			$(trailStats).append("<h5> Trail City: " + trailCity + "</h5>");
+			$(trailStats).append("<h5> Difficulty Level: " + trailDifficulty + "</h5>");
+			$(trailStats).append("<h5> Trail Rating: " + trailRating+ "</h5>");
+			$(trailStats).append("<p><a href='" +trailUrl+ "'>For More Information Click Here</a></p>")	
 	}
 
 getParameters();
