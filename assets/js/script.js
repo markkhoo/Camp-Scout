@@ -23,35 +23,6 @@ function updatePageNum() {
     document.getElementById("pageNum").innerHTML = currentPageNum;
 };
 
-// Store Previous Searches
-function storeSearches(name, lat, lon, trailID) {
-    // Store INFO into object
-    var currentTrail = {
-        name: name,
-        lat: lat,
-        lon: lon,
-        trailID: trailID
-    };
-
-    // Pull stored trail info from local storage
-    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
-
-    // Check if stored Trails exist
-    if (storedTrails != null) {
-
-        // Push into stored Trails and store
-        storedTrails.push(currentTrail);
-        localStorage.setItem("storedTrails", JSON.stringify(storedTrails));
-    } else {
-
-        // Push new object into an empty array and store
-        var stringOTrails = [];
-        stringOTrails.push(currentTrail);
-        localStorage.setItem("storedTrails", JSON.stringify(stringOTrails)); 
-    };
-
-};
-
 // Wind Direction Solver
 function windDirection(deg) {
     if (deg < 23 || deg >= 338) {
@@ -74,6 +45,46 @@ function windDirection(deg) {
         return ""
     };
 }
+
+// Store Previous Searches
+function storeSearches(name, lat, lon, trailID) {
+    // Store INFO into object
+    var currentTrail = {
+        name: name,
+        lat: lat,
+        lon: lon,
+        trailID: trailID
+    };
+
+    // Pull stored trail info from local storage
+    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
+
+    // Check if stored Trails exist
+    if (storedTrails != null) {
+        
+        // Create array of name for duplicate check below
+        var nameCheck = [];
+        for (var i = 0; i < storedTrails.length; i++ ) {
+            nameCheck.push(storedTrails[i].name);
+        };
+
+        // Check for duplicate Trails
+        if (!nameCheck.includes(name)) {
+
+            // Push into stored Trails and store
+            storedTrails.push(currentTrail);
+            localStorage.setItem("storedTrails", JSON.stringify(storedTrails));
+        };
+
+    } else {
+
+        // Push new object into an empty array and store
+        var stringOTrails = [];
+        stringOTrails.push(currentTrail);
+        localStorage.setItem("storedTrails", JSON.stringify(stringOTrails)); 
+    };
+
+};
 
 // Display City Weather
 function displayWeather(data_object) {
