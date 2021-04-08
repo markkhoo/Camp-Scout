@@ -1,0 +1,15 @@
+.trail {
+    color: black;
+    background-color: rgb(82, 189, 100);
+    border-radius: 20px;
+    align-items: center;
+}    
+
+.weather {
+    background-color: rgb(133, 194, 143);
+    border-radius: 20px;
+}
+.columns{
+    column-gap: 40px;
+    margin: auto;
+}

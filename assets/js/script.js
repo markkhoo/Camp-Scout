@@ -219,11 +219,11 @@ searchResults.addEventListener('click', function(event) {
     currentElement = event.target;
     console.log(currentElement.parentElement.getAttribute("data-id"));
 
-    var data_lat = currentElement.parentElement.getAttribute("data-id");
-    var data_lon = currentElement.parentElement.getAttribute("data-id");
+    var data_lat = currentElement.parentElement.getAttribute("data-lat");
+    var data_lon = currentElement.parentElement.getAttribute("data-lon");
     var data_id = currentElement.parentElement.getAttribute("data-id");
 
-    var queryUrl = "./assets/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
+    var queryUrl = "./assets/js/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
 
     location.assign(queryUrl);
     

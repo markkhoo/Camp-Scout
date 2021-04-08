@@ -1,12 +1,29 @@
-var trail;
+//./assets/facility.html?lat=90&lon=90&id=12156
+var queryLat =  findGetParameter("lat");
+	var queryLong = findGetParameter("lon");
+	var trailID = findGetParameter("id");
+function findGetParameter(parameterName) {
+    var result = null,
+        tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          tmp = item.split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+    return result;
+}
+console.log("****", findGetParameter("lon")) 
+
+
+
 function getParameters() {
 	//get search parameters out of URL
 	var searchParamsArray = document.location.search.split("&");
 
 	//Get the latitude and longitude values
-	var queryLat = 34.0522  //searchParamsArray[0].split("=").pop();
-	var queryLong = -118.2437 //searchParamsArray[1].split("=").pop();
-	trailID = 283104//searchParamsArray[2].split("=").pop();
+	
 	searchAPI (queryLat, queryLong);
 }
 var trailStats = $(".trail");
@@ -79,7 +96,7 @@ function searchAPI (queryLat, queryLong,) {
 	//do the work of appending trail info to page
 	function appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl){
 			$(trailStats).append("<h2>" + trailName + "</h2>");
-			$(trailStats).append("<p><img src='" + trailImage + "'/></p>");
+			$(trailStats).append("<img src='" + trailImage + "'/>");
 			$(trailStats).append("<p>Trail Description: " + trailDescription + "</p>");
 			$(trailStats).append("<p> Trail City: " + trailCity + "</p>");
 			$(trailStats).append("<p> Difficulty Level: " + trailDifficulty + "</p>");
