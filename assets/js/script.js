@@ -5,6 +5,7 @@
 // Pointers
 var searchForm = document.getElementById("location");
 var searchResults = document.getElementById("searchResults");
+var currentWeather = document.getElementById("currentWeather");
 
 // Global Variables
 var currentCity = "";
@@ -37,8 +38,10 @@ function windDirection(deg) {
         return "SW"
     } else if (deg < 293) {
         return "W"
+    } else if (deg < 338) {
+        return "WE"
     } else {
-
+        return ""
     };
 }
 
@@ -63,8 +66,13 @@ function displayWeather(data_object) {
     card_temp_min.innerHTML = "min " + temp_min;
     card_temp_max.innerHTML = "max " + temp_max;
     card_humidity.innerHTML = humidity + "%";
-    card_wind_all.innerHTML = " " + wind_spe + " mph";
+    card_wind_all.innerHTML = windDirection(wind_deg) + " " + wind_spe + " mph";
 
+    currentWeather.appendChild(card_tempFeel);
+    currentWeather.appendChild(card_temp_min);
+    currentWeather.appendChild(card_temp_max);
+    currentWeather.appendChild(card_humidity);
+    currentWeather.appendChild(card_wind_all);
 };
 
 // Display Cards
@@ -219,8 +227,8 @@ searchResults.addEventListener('click', function(event) {
     currentElement = event.target;
     console.log(currentElement.parentElement.getAttribute("data-id"));
 
-    var data_lat = currentElement.parentElement.getAttribute("data-id");
-    var data_lon = currentElement.parentElement.getAttribute("data-id");
+    var data_lat = currentElement.parentElement.getAttribute("data-lat");
+    var data_lon = currentElement.parentElement.getAttribute("data-lon");
     var data_id = currentElement.parentElement.getAttribute("data-id");
 
     var queryUrl = "./assets/facility.html?lat=" + data_lat + "&lon=" + data_lon + "&id=" + data_id;
