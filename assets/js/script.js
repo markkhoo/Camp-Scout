@@ -18,6 +18,40 @@ var wind_deg = 0;
 var wind_spe = 0;
 var weatherIcon = "";
 
+// Update Page Number
+function updatePageNum() {
+    document.getElementById("pageNum").innerHTML = currentPageNum;
+};
+
+// Store Previous Searches
+function storeSearches(name, lat, lon, trailID) {
+    // Store INFO into object
+    var currentTrail = {
+        name: name,
+        lat: lat,
+        lon: lon,
+        trailID: trailID
+    };
+
+    // Pull stored trail info from local storage
+    var storedTrails = JSON.parse(localStorage.getItem("storedTrails"));
+
+    // Check if stored Trails exist
+    if (storedTrails != null) {
+
+        // Push into stored Trails and store
+        storedTrails.push(currentTrail);
+        localStorage.setItem("storedTrails", JSON.stringify(storedTrails));
+    } else {
+
+        // Push new object into an empty array and store
+        var stringOTrails = [];
+        stringOTrails.push(currentTrail);
+        localStorage.setItem("storedTrails", JSON.stringify(stringOTrails)); 
+    };
+
+};
+
 // Wind Direction Solver
 function windDirection(deg) {
     if (deg < 23 || deg >= 338) {
@@ -51,7 +85,6 @@ function displayWeather(data_object) {
     wind_spe = data_object.wind.speed;
     weatherIcon = data_object.weather[0].icon;
 
-    // console.log(tempFeel, temp_min, temp_max, humidity, wind_spe, wind_deg, weatherIcon);
     var card_tempFeel = document.createElement("h3");
     var card_temp_min = document.createElement("h3");
     var card_temp_max = document.createElement("h3");
@@ -91,16 +124,21 @@ function displayResults(data_object) {
             cardResult.setAttribute("class", "Card");
             cardResult.setAttribute("data-lat", data_object.data[i].lat);
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
-            cardResult.setAttribute("data-id",data_object.data[i].id.toString());
+            cardResult.setAttribute("data-id",  data_object.data[i].id.toString());
+            cardResult.setAttribute("data-name", data_object.data[i].name);
 
             // Adding the click feature for the card
             cardResult.onclick = function() {
-                var queryLat = this.getAttribute("data-lat");
-                var queryLon = this.getAttribute("data-lon");
-                var queryID = this.getAttribute("data-id");
-                // console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID}`);
-                var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
-                location.assign(queryUrl);
+                var queryLat =  this.getAttribute("data-lat");
+                var queryLon =  this.getAttribute("data-lon");
+                var queryID =   this.getAttribute("data-id");
+                var queryName = this.getAttribute("data-name");
+                // var queryUrl = "./assets/js/facility.html?lat=" + queryLat + "&lon=" + queryLon + "&id=" + queryID;
+                // This Loads the other page
+                // location.assign(queryUrl);
+                
+                storeSearches(queryName, queryLat, queryLon, queryID);
+                console.log(`lat: ${queryLat} \nlon: ${queryLon} \nid: ${queryID} \nname: ${queryName}`);
             }
 
             var resultName = document.createElement("h4");
@@ -193,11 +231,6 @@ function trailSearch(pageNum, lat, lon) {
 
         displayResults(data);
     });
-};
-
-// Update Page Number
-function updatePageNum() {
-    document.getElementById("pageNum").innerHTML = currentPageNum;
 };
 
 // Form Submission
