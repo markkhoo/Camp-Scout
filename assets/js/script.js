@@ -41,7 +41,7 @@ function windDirection(deg) {
     } else if (deg < 293) {
         return "W"
     } else if (deg < 338) {
-        return "WE"
+        return "NW"
     } else {
         return ""
     };
@@ -139,6 +139,8 @@ function displaySearches() {
 
 // Display City Weather
 function displayWeather(data_object) {
+    currentWeather.innerHTML = "";
+
     tempFeel = data_object.main.feels_like;
     temp_min = data_object.main.temp_min;
     temp_max = data_object.main.temp_max;
@@ -157,7 +159,7 @@ function displayWeather(data_object) {
     card_temp_min.innerHTML = "min " + Math.floor(temp_min) + " °F";
     card_temp_max.innerHTML = "max " + Math.ceil(temp_max) + " °F";
     card_humidity.innerHTML = "Humidity " + Math.round(humidity) + "%";
-    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + " " + Math.round(wind_spe) + " mph";
+    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + "-" + Math.round(wind_spe) + " mph";
 
     currentWeather.appendChild(card_tempFeel);
     currentWeather.appendChild(card_temp_min);
@@ -187,7 +189,7 @@ function displayResults(data_object) {
 
             // Append Individual Card Results
             var cardResult = document.createElement("div");
-            cardResult.setAttribute("class", "Card");
+            cardResult.setAttribute("class", "card column is-one-third block");
             cardResult.setAttribute("data-lat", data_object.data[i].lat);
             cardResult.setAttribute("data-lon", data_object.data[i].lon);
             cardResult.setAttribute("data-id",  data_object.data[i].id.toString());
@@ -195,9 +197,11 @@ function displayResults(data_object) {
             cardResult.onclick = clickToPage;
 
             var resultName = document.createElement("h4");
+            resultName.setAttribute("class","card-header-title");
             resultName.innerHTML = data_object.data[i].name;
 
             var resultDiff = document.createElement("p");
+            resultDiff.setAttribute("class","card-content");
             // Checks if trail has a difficulty
             if (data_object.data[i].difficulty != "") {
                 resultDiff.innerHTML = "Trail Difficulty: " + data_object.data[i].difficulty;
@@ -206,6 +210,7 @@ function displayResults(data_object) {
             };
             
             var resultRate = document.createElement("p");
+            resultRate.setAttribute("class","card-content");
             // Checks if trail has a rating
             if (data_object.data[i].rating != "") {
                 resultRate.innerHTML = "Trail Rating: " + data_object.data[i].rating + "/5";
