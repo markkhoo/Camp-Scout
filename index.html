@@ -15,21 +15,42 @@
 
     <div>
 
-        <form>
-            <input>
-            <input>
-            <button>Submit</button>
+        <form id="location">
+            <input type="text" placeholder="San Francisco">
+            <input type="submit" value="Submit">
+
         </form>
 
-        <ul>
+        <div>
+            <button id="prevBtn">&laquo; PREV &laquo;</button>
+            <p>Page: <span id="pageNum"></span></p>
+            <button id="nextBtn">&raquo; NEXT &raquo;</button>
+        </div>
 
-        </ul>
+        <div id="searchHistory">
+
+        </div>
 
     </div>
 
     <div>
 
+        <h2>Showing Results for <span id="currentCity"></span></h2>
+
+        <div id="currentWeather">
+
+        </div>
+
+        <h2>Trails Nearby</h2>
+
+        <div id="searchResults">
+
+        </div>
+
     </div>
     
 </body>
+
+<script src="./assets/js/script.js"></script>
+
 </html>
