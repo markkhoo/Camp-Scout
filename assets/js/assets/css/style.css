@@ -15,7 +15,7 @@
     margin: auto;
 }
 body {
-    background-color: rgb(196, 235, 181);
+    background-color:black;
 }
 h2 {
     font-size: 30px;
@@ -33,4 +33,7 @@ img {
 .subtitle {
     color: black;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.hero {
+    background-color: black;
 }
