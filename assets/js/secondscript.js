@@ -71,17 +71,17 @@ function searchAPI (queryLat, queryLong,) {
 			cards+=
 			`
 			<div class="column is-12">
-			<div class="card column">
-			<h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
-			<p>Temperature F: ${datum.main.temp_max}</p>
-            <p>Humidity: ${datum.main.humidity}</p>
-            <p>Wind Speed: ${datum.wind.speed}</p>
+			<div class="card column is-12">
+			<h4 class='subtitle is-4'><strong>${new Date(datum.dt_txt).toLocaleDateString()}</strong></h4>
+			<p class='subtitle is-6'>Temperature F: ${datum.main.temp_max}</p>
+            <p class='subtitle is-6'>Humidity: ${datum.main.humidity}</p>
+            <p class='subtitle is-6'>Wind Speed: ${datum.wind.speed} mph</p>
             <p><img src="http://openweathermap.org/img/w/${datum.weather[0].icon}.png"/></p>
 			</div>
 			</div>
 			`;
 		});
-		$(".weather").html(cards);
+		//$(".forecast-container").html(cards);
 
 		//fetches the trail API
 		fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {
@@ -109,9 +109,12 @@ function searchAPI (queryLat, queryLong,) {
 
 
 			//append weather info
-			appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
+			
+			//appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
 			//append trail info with arguments
 			 appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl);
+			 //appends cards
+			 $(".forecast-container").html(cards);
 		})
 		})	
 		})
