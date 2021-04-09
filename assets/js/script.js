@@ -19,6 +19,10 @@ var wind_deg = 0;
 var wind_spe = 0;
 var weatherIcon = "";
 
+var aqi = 0;
+var pm2_5 = 0;
+var pm10 = 0;
+
 // Update Page Number
 function updatePageNum() {
     document.getElementById("pageNum").innerHTML = " " + currentPageNum + " of " + maximumPageNum;
@@ -45,7 +49,32 @@ function windDirection(deg) {
     } else {
         return ""
     };
-}
+};
+
+// Card Image Function
+function imageWeather (icon) {
+    if (icon == "01d" || icon == "01n") {
+        return 'url("./assets/images/clear_sky.jpeg")';
+    } else if (icon == "02d" || icon == "02n") {
+        return 'url("./assets/images/few_clouds.jpeg")';
+    } else if (icon == "03d" || icon == "03n") {
+        return 'url("./assets/images/scattered_clouds.jpeg")';
+    } else if (icon == "04d" || icon == "04n") {
+        return 'url("./assets/images/broken_clouds.jpeg")';
+    } else if (icon == "09d" || icon == "09n") {
+        return 'url("./assets/images/light_rain.jpeg")';
+    } else if (icon == "10d" || icon == "10n") {
+        return 'url("./assets/images/rain.jpeg")';
+    } else if (icon == "11d" || icon == "11n") {
+        return 'url("./assets/images/thunderstorm.jpeg")';
+    } else if (icon == "13d" || icon == "13n") {
+        return 'url("./assets/images/snow.jpeg")';
+    } else if (icon == "50d" || icon == "50n") {
+        return 'url("./assets/images/mist.jpeg")';
+    } else {
+        return 'url("./assets/images/white.jpeg")';
+    };
+};
 
 // Function for onclick... Goes to second page
 function clickToPage() {
@@ -154,18 +183,55 @@ function displayWeather(data_object) {
     var card_temp_max = document.createElement("h3");
     var card_humidity = document.createElement("h3");
     var card_wind_all = document.createElement("h3");
+    var card_break001 = document.createElement("br");
+    var card_break002 = document.createElement("br");
 
     card_tempFeel.innerHTML = "Feels like " + Math.round(tempFeel) + " °F";
     card_temp_min.innerHTML = "min " + Math.floor(temp_min) + " °F";
     card_temp_max.innerHTML = "max " + Math.ceil(temp_max) + " °F";
-    card_humidity.innerHTML = "Humidity " + Math.round(humidity) + "%";
-    card_wind_all.innerHTML = "Wind " + windDirection(wind_deg) + "-" + Math.round(wind_spe) + " mph";
+    card_humidity.innerHTML = "Humidity: " + Math.round(humidity) + "%";
+    card_wind_all.innerHTML = "Wind: " + windDirection(wind_deg) + " " + Math.round(wind_spe) + " mph";
 
     currentWeather.appendChild(card_tempFeel);
     currentWeather.appendChild(card_temp_min);
     currentWeather.appendChild(card_temp_max);
+    currentWeather.appendChild(card_break001);
     currentWeather.appendChild(card_humidity);
     currentWeather.appendChild(card_wind_all);
+    currentWeather.appendChild(card_break002);
+
+    currentWeather.style.setProperty("background-image", imageWeather(weatherIcon));
+};
+
+// Display City AQI
+function displayAQI(data_object) {
+    aqi = data_object.list[0].main.aqi;
+    pm2_5 = data_object.list[0].components.pm2_5;
+    pm10 = data_object.list[0].components.pm10;
+
+    var card_aqi =   document.createElement("h3");
+    var card_pm2_5 = document.createElement("h3");
+    var card_pm10 =  document.createElement("h3");
+
+    card_aqi.innerHTML =   "AQI " + aqi;
+    card_pm2_5.innerHTML = "PM2.5: " + pm2_5 + " μg/m3";
+    card_pm10.innerHTML =  "PM10: " + pm10 + " μg/m3";
+
+    if (aqi == 1) {
+        card_aqi.style.setProperty("background-color", "rgb(20,221,240)");
+    } else if (aqi == 2) {
+        card_aqi.style.setProperty("background-color", "rgb(45,247,51)");
+    } else if (aqi == 3) {
+        card_aqi.style.setProperty("background-color", "rgb(224,210,51)");
+    } else if (aqi == 4) {
+        card_aqi.style.setProperty("background-color", "rgb(247,148,45)");
+    } else if (aqi == 5) {
+        card_aqi.style.setProperty("background-color", "rgb(240,41,70)");
+    };
+
+    currentWeather.appendChild(card_aqi);
+    currentWeather.appendChild(card_pm2_5);
+    currentWeather.appendChild(card_pm10);
 };
 
 // Display Cards
@@ -180,6 +246,7 @@ function displayResults(data_object) {
     // Display Subtitles on Search
     document.getElementById("subtitle2").style.setProperty("visibility", "initial");
     document.getElementById("subtitle3").style.setProperty("visibility", "initial");
+    document.getElementById("currentWeather").style.setProperty("visibility", "initial");
 
     // Check for non-zero results
     if (data_object.data != null) {
@@ -247,6 +314,10 @@ function weatherSearch(cityName) {
         if (response.status == 200) {
             return response.json();
         } else {
+
+            // SWEET ALERT modal
+            swal("Invalid City Name", "Please input another city name", "error");
+
             return null;
         };
     })
@@ -263,9 +334,24 @@ function weatherSearch(cityName) {
 
         // Display Weather Information
         displayWeather(data);
+        
+        // Run Air Pollution Search (MUST run AFTER disaplayWeather)
+        airPollutionSearch(searchLat,searchLon,keyWeather);
     })
     .catch(err => {
         console.log(err);
+    });
+};
+
+// Air Pollution Search Function
+function airPollutionSearch (lat, lon, keyAPI) {
+    fetch("https://api.openweathermap.org/data/2.5/air_pollution?lat=" + lat + "&lon=" + lon + "&appid=" + keyAPI)
+    .then(response => {
+        return response.json();
+    })
+    .then(function(data) {
+        displayAQI(data);
+        console.log(data);
     });
 };
 
@@ -282,7 +368,7 @@ function trailSearch(pageNum, lat, lon) {
     .then(response => {
         return response.json();
     })
-    .then(function (data){
+    .then(function(data) {
         maximumPageNum = Math.ceil(data.results / results_Number);
         updatePageNum();
         console.log(data);
@@ -297,6 +383,7 @@ function init() {
 
     document.getElementById("subtitle2").style.setProperty("visibility", "hidden");
     document.getElementById("subtitle3").style.setProperty("visibility", "hidden");
+    document.getElementById("currentWeather").style.setProperty("visibility", "hidden");
 };
 init();
 

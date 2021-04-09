@@ -1,0 +1,16 @@
+h3 {
+    display: inline-block;
+    margin: 0.25em;
+    padding: 2px 10px;
+    border-radius: 18px;
+
+    color: #FFF;
+    text-shadow: 0 0 2px #000000, 0 0 4px #000000, 0 0 8px #000000;
+    background-color: rgba(231, 255, 255, 0.753);
+}
+
+#currentWeather {
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 70px 10px;
+}
