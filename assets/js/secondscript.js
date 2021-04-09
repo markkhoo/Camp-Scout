@@ -51,7 +51,7 @@ function searchAPI (queryLat, queryLong,) {
         currentWindSpe = data.current.wind_speed;
         currentWindGus = data.current.wind_gust;
         currentWindDeg = data.current.wind_deg;
-
+		//forecast fetch
 		var foreCastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=22bb6e2db366aab8539ac22df7b32d3a";
 		console.log("forecast URL", foreCastUrl);
 		
