@@ -11,3 +11,5 @@ Trail Scout is an interactive application that allows users to search for trails
 
 The user is then able to browse through all of the results and pick a trail that looks interesting. When the user selects a trail and clicks on the trail card, the user is then redirected to a details page. In the details page, the user will find more information on the specific trail the user clicked. Information such as trail description, trail rating, trail difficulty, a photo of the trail, and a five day weather forecast of the trail. 
 
+The user is then able to return to the search page and start a new search if they like to. Additionally, the application is able to save the search history. What that means is that the user can easily compare the trails that have been clicked and make a better decision. 
+
