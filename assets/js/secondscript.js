@@ -1,4 +1,4 @@
-//./assets/facility.html?lat=90&lon=90&id=12156
+//Get parameters from search page
 var queryLat =  findGetParameter("lat");
 	var queryLong = findGetParameter("lon");
 	var trailID = findGetParameter("id");
@@ -15,7 +15,6 @@ function findGetParameter(parameterName) {
     return result;
 }
 console.log("****", findGetParameter("lon")) 
-
 
 
 function getParameters() {
@@ -109,7 +108,7 @@ function searchAPI (queryLat, queryLong,) {
 
 
 			//append weather info
-			
+
 			//appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
 			//append trail info with arguments
 			 appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl);
