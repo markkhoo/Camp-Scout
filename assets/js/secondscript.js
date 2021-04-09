@@ -54,7 +54,7 @@ function searchAPI (queryLat, queryLong,) {
 		//forecast fetch
 		var foreCastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=22bb6e2db366aab8539ac22df7b32d3a";
 		console.log("forecast URL", foreCastUrl);
-		
+		//fetch forecast URL
 		fetch(foreCastUrl)
 		.then(function (response) {
 			return response.json();
