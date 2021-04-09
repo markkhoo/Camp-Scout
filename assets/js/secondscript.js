@@ -62,7 +62,7 @@ function searchAPI (queryLat, queryLong,) {
 		.then(function(forecastData) {
 			console.log("forecastdata", forecastData)
 		
-
+		//filters the forecast data
 		var foreCastData = forecastData.list.filter((listItem) => listItem.dt_txt.indexOf("00:00:00") > -1);
 		console.log("forecastdata***", foreCastData);
 		let cards = ""
