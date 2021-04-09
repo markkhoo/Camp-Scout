@@ -35,7 +35,7 @@ var currentWindGus = 0;
 var currentWindDeg = 0;
 var keyAPI = "22bb6e2db366aab8539ac22df7b32d3a";
 
-
+//function to fetch weather
 function searchAPI (queryLat, queryLong,) {
     var weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=" + keyAPI;
     //fetches weather API
