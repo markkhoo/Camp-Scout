@@ -143,6 +143,7 @@ function displaySearches() {
             // Set attributes in button
             var recentSearch = document.createElement("span");
             recentSearch.innerHTML = storedTrails[i].name;
+            recentSearch.setAttribute("data-name", storedTrails[i].name);
             recentSearch.setAttribute("data-lat", storedTrails[i].lat);
             recentSearch.setAttribute("data-lon", storedTrails[i].lon);
             recentSearch.setAttribute("data-id", storedTrails[i].trailID);
