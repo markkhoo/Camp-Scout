@@ -46,3 +46,12 @@ fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {<br>
                 trailName = trailData.data[0].name;<br>
                 trailImage = trailData.data[0].thumbnail;<br>
 
+## Repository Link
+https://github.com/markkhoo/Trail-Scout/tree/data
+
+## Deploy Link
+https://markkhoo.github.io/Trail-Scout/
+
+## Personal Links
+[Github](https://github.com/javimarashall)<br>
+[Linkedin](https://www.linkedin.com/in/javier-mondragon-7b471719b/)
