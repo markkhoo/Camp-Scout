@@ -22,12 +22,11 @@ I’ve always run into problems going to a hiking spot. The weather is sometimes
 - JQuery - Used to write javascript syntax
 - GitHub - Used to store the repository in the cloud
 - Git - Used to push edits up to the GitHub repository
-- Open Weather Map API - Used to fetch the weather data used for the application
-- Sweet Alert - Used to replace vanilla modals
 - Open Weather API - Used to retrieve weather data
 - Trail API - Used to fetch trail data
 - Fetch - Used to send fetch to API
 - Bulma - Is a free open source framework that provides developers with ready to use components. Bulma is easy to   use and quick to set up. Just copy the styling link into the HTML and add classes to elements.
+- Sweet Alert - Used to replace vanilla modals
 - ScreenToGif - Create Gifs for presentation and README
 
 ## Code Snippet
@@ -54,7 +53,7 @@ fetch("https://trailapi-trailapi.p.rapidapi.com/trails/" + trailID, {<br>
 ---
 
 ## Repository Link
-[Github Repo](https://github.com/markkhoo/Trail-Scout/tree/data)
+[Github Repo](https://github.com/markkhoo/Trail-Scout/tree/main)
 
 ## Deploy Link
 [Trail Scout Website](https://markkhoo.github.io/Trail-Scout/)
