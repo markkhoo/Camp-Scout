@@ -1,4 +1,4 @@
-//./assets/facility.html?lat=90&lon=90&id=12156
+//Get parameters from search page
 var queryLat =  findGetParameter("lat");
 	var queryLong = findGetParameter("lon");
 	var trailID = findGetParameter("id");
@@ -15,7 +15,6 @@ function findGetParameter(parameterName) {
     return result;
 }
 console.log("****", findGetParameter("lon")) 
-
 
 
 function getParameters() {
@@ -36,7 +35,7 @@ var currentWindGus = 0;
 var currentWindDeg = 0;
 var keyAPI = "22bb6e2db366aab8539ac22df7b32d3a";
 
-
+//function to fetch weather
 function searchAPI (queryLat, queryLong,) {
     var weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=" + keyAPI;
     //fetches weather API
@@ -52,10 +51,10 @@ function searchAPI (queryLat, queryLong,) {
         currentWindSpe = data.current.wind_speed;
         currentWindGus = data.current.wind_gust;
         currentWindDeg = data.current.wind_deg;
-
+		//forecast fetch
 		var foreCastUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + queryLat + "&lon=" + queryLong + "&units=imperial&appid=22bb6e2db366aab8539ac22df7b32d3a";
 		console.log("forecast URL", foreCastUrl);
-		
+		//fetch forecast URL
 		fetch(foreCastUrl)
 		.then(function (response) {
 			return response.json();
@@ -63,7 +62,7 @@ function searchAPI (queryLat, queryLong,) {
 		.then(function(forecastData) {
 			console.log("forecastdata", forecastData)
 		
-
+		//filters the forecast data
 		var foreCastData = forecastData.list.filter((listItem) => listItem.dt_txt.indexOf("00:00:00") > -1);
 		console.log("forecastdata***", foreCastData);
 		let cards = ""
@@ -109,7 +108,7 @@ function searchAPI (queryLat, queryLong,) {
 
 
 			//append weather info
-			
+
 			//appendWeatherInfo(currentTemp, currentHumi, currentUVI, currentWindSpe);
 			//append trail info with arguments
 			 appendTrailInfo(trailName, trailImage, trailDescription, trailCity, trailDifficulty, trailRating, trailUrl);
