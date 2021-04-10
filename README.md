@@ -1,4 +1,4 @@
-### Trail-Scout
+# Trail-Scout
 
 ## Site
 ![Site](./assets/images/trail-scout.gif)
@@ -53,5 +53,5 @@ https://github.com/markkhoo/Trail-Scout/tree/data
 https://markkhoo.github.io/Trail-Scout/
 
 ## Personal Links
-[Github](https://github.com/javimarashall)<br>
+[Github](https://github.com/javimarashall)
 [Linkedin](https://www.linkedin.com/in/javier-mondragon-7b471719b/)
